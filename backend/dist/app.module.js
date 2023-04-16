@@ -34,7 +34,7 @@ AppModule = __decorate([
             }),
             sequelize_1.SequelizeModule.forRoot({
                 dialect: 'postgres',
-                host: process.env.POSTGRES_HOST || '194.67.116.54',
+                host: process.env.POSTGRES_HOST || 'localhost',
                 port: Number(process.env.POSTGRES_PORT || 5432),
                 username: process.env.POSTGRES_USER || 'postgres',
                 password: process.env.POSTGRES_PASSWORD || 'dima0509',
