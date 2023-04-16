@@ -1,0 +1,17 @@
+{
+  "name": "freelance-admin",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "main.js",
+  "scripts": {
+    "start": "cd backend && nest build && cd ../frontend && vue-cli-service build && cd ../backend && cross-env NODE_ENV=production node dist/main",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {},
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DmitriiSR/freelance_admin/issues"
+  },
+  "homepage": "https://github.com/DmitriiSR/freelance_admin#readme"
+}
