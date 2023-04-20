@@ -34,7 +34,8 @@ let AuthService = class AuthService {
             throw new common_1.HttpException('Пользователь с таким email адресом уже существует', common_1.HttpStatus.BAD_REQUEST);
         }
         this.user = Object.assign({}, userDto);
-        this.mailService.sendMail('ryabukhin0509@mail.ru', 'Проверочный код', `Проверочный код <h1>${this.CodeService.getCode()}</h1>`)
+        this.CodeService.generateCode();
+        this.mailService.sendMail(this.user.email, 'Подтверждение почты', `Код ${this.CodeService.getCode()}`)
             .then(() => console.log('код успешно отправлен'))
             .catch((error) => console.log(error));
         return true;

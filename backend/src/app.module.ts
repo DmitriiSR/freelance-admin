@@ -41,12 +41,12 @@ import { MailerModule } from '@nestjs-modules/mailer';
         }),
         MailerModule.forRoot({
             transport: {
-                host: 'smtp-mail.outlook.com',
+                host: 'smtp.gmail.com',
                 port: 587,
                 secure: false,
                 auth: {
-                    user: 'd.raybukhin0509@outlook.com',
-                    pass: 'dima0509',
+                    user: 'd.ryabukhin0509@gmail.com',
+                    pass: 'jcspteypvmbtycyh',
                 },
             },
         }),

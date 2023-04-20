@@ -31,10 +31,12 @@ export class AuthService {
 
         this.user = {...userDto}
 
+        this.CodeService.generateCode();
+
         this.mailService.sendMail(
-            'ryabukhin0509@mail.ru',
-            'Проверочный код',
-            `Проверочный код <h1>${this.CodeService.getCode()}</h1>`,
+            this.user.email,
+            'Подтверждение почты',
+            `Код ${this.CodeService.getCode()}`,
         )
             .then(() => console.log('код успешно отправлен'))
             .catch((error) => console.log(error))
