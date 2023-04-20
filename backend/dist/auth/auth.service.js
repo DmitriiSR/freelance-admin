@@ -15,9 +15,11 @@ const users_service_1 = require("../users/users.service");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcryptjs");
 const confirm_code_service_1 = require("../confirm_code/confirm_code.service");
+const mailer_service_1 = require("../mailer/mailer.service");
 let AuthService = class AuthService {
-    constructor(userService, CodeService, jwtService) {
+    constructor(userService, mailService, CodeService, jwtService) {
         this.userService = userService;
+        this.mailService = mailService;
         this.CodeService = CodeService;
         this.jwtService = jwtService;
         this.user = null;
@@ -27,16 +29,17 @@ let AuthService = class AuthService {
         return this.generateToken(user);
     }
     async validateRegistration(userDto) {
-        console.log(userDto);
         const candidate = await this.userService.getUserByEmail(userDto.email);
         if (candidate) {
             throw new common_1.HttpException('Пользователь с таким email адресом уже существует', common_1.HttpStatus.BAD_REQUEST);
         }
         this.user = Object.assign({}, userDto);
+        this.mailService.sendMail('ryabukhin0509@mail.ru', 'Проверочный код', `Проверочный код <h1>${this.CodeService.getCode()}</h1>`)
+            .then(() => console.log('код успешно отправлен'))
+            .catch((error) => console.log(error));
         return true;
     }
     async confirmRegistration(code) {
-        console.log(this.user);
         if (!this.CodeService.validateCode(code)) {
             throw new common_1.HttpException('Неверный код', common_1.HttpStatus.BAD_REQUEST);
         }
@@ -57,16 +60,20 @@ let AuthService = class AuthService {
     }
     async validateUser(userDto) {
         const user = await this.userService.getUserByEmail(userDto.email);
+        if (!user) {
+            throw new common_1.UnauthorizedException({ message: 'Неверный email' });
+        }
         const passwordEquals = await bcrypt.compare(userDto.password, user.password);
         if (passwordEquals) {
             return user;
         }
-        throw new common_1.UnauthorizedException({ message: 'Неверный пароль или email' });
+        throw new common_1.UnauthorizedException({ message: 'Неверный пароль' });
     }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService,
+        mailer_service_1.MailService,
         confirm_code_service_1.CodeService,
         jwt_1.JwtService])
 ], AuthService);

@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs'
 import {User} from "../users/users.model";
 import {CodeService} from "../confirm_code/confirm_code.service";
+import {MailService} from "../mailer/mailer.service";
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
     private user = null;
 
     constructor(private userService: UsersService,
+                private mailService: MailService,
                 private CodeService: CodeService,
                 private jwtService: JwtService) {}
 
@@ -21,7 +23,6 @@ export class AuthService {
     }
 
     async validateRegistration(userDto: CreateUserDto) {
-        console.log(userDto)
         const candidate = await this.userService.getUserByEmail(userDto.email);
 
         if (candidate) {
@@ -30,12 +31,18 @@ export class AuthService {
 
         this.user = {...userDto}
 
+        this.mailService.sendMail(
+            'ryabukhin0509@mail.ru',
+            'Проверочный код',
+            `Проверочный код <h1>${this.CodeService.getCode()}</h1>`,
+        )
+            .then(() => console.log('код успешно отправлен'))
+            .catch((error) => console.log(error))
 
         return true
     }
 
     async confirmRegistration(code: number) {
-        console.log(this.user)
         if (!this.CodeService.validateCode(code)) {
             throw new HttpException('Неверный код', HttpStatus.BAD_REQUEST)
         }
@@ -62,12 +69,17 @@ export class AuthService {
 
     private async validateUser(userDto: CreateUserDto) {
         const user = await this.userService.getUserByEmail(userDto.email);
+
+        if (!user) {
+            throw new UnauthorizedException({message: 'Неверный email'})
+        }
+
         const passwordEquals = await bcrypt.compare(userDto.password, user.password);
 
         if (passwordEquals) {
             return user;
         }
 
-        throw new UnauthorizedException({message: 'Неверный пароль или email'})
+        throw new UnauthorizedException({message: 'Неверный пароль'})
     }
 }

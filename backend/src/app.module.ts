@@ -8,6 +8,7 @@ import { ConfirmCodeModule } from './confirm_code/confirm_code.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { BaseExceptionFilter } from '@nestjs/core';
 import * as path from 'path';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
     controllers: [],
@@ -37,6 +38,17 @@ import * as path from 'path';
         ServeStaticModule.forRoot({
             rootPath: path.join(__dirname, '../../', 'frontend', 'dist'),
             exclude: ['/api*'], // исключаем все маршруты, начинающиеся с "/api"
+        }),
+        MailerModule.forRoot({
+            transport: {
+                host: 'smtp-mail.outlook.com',
+                port: 587,
+                secure: false,
+                auth: {
+                    user: 'd.raybukhin0509@outlook.com',
+                    pass: 'dima0509',
+                },
+            },
         }),
     ]
 })

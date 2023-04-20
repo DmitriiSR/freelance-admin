@@ -9,25 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CodeService = void 0;
+exports.MailService = void 0;
 const common_1 = require("@nestjs/common");
-let CodeService = class CodeService {
-    constructor() {
-        this.generateCode();
+const mailer_1 = require("@nestjs-modules/mailer");
+let MailService = class MailService {
+    constructor(mailerService) {
+        this.mailerService = mailerService;
     }
-    getCode() {
-        return this.code;
-    }
-    generateCode() {
-        this.code = Math.floor(Math.random() * 9000) + 1000;
-    }
-    validateCode(code) {
-        return code === this.code;
+    async sendMail(to, subject, text) {
+        await this.mailerService.sendMail({
+            to,
+            subject,
+            text,
+        });
     }
 };
-CodeService = __decorate([
+MailService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
-], CodeService);
-exports.CodeService = CodeService;
-//# sourceMappingURL=confirm_code.service.js.map
+    __metadata("design:paramtypes", [mailer_1.MailerService])
+], MailService);
+exports.MailService = MailService;
+//# sourceMappingURL=mailer.service.js.map

@@ -6,18 +6,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ConfirmCodeModule = void 0;
+exports.MailerModule = void 0;
 const common_1 = require("@nestjs/common");
-const confirm_code_service_1 = require("./confirm_code.service");
-const mailer_service_1 = require("../mailer/mailer.service");
-const confirm_code_controller_1 = require("./confirm_code.controller");
-let ConfirmCodeModule = class ConfirmCodeModule {
+const mailer_service_1 = require("./mailer.service");
+let MailerModule = class MailerModule {
 };
-ConfirmCodeModule = __decorate([
+MailerModule = __decorate([
     (0, common_1.Module)({
-        controllers: [confirm_code_controller_1.GetCode],
-        providers: [confirm_code_service_1.CodeService, mailer_service_1.MailService],
+        imports: [],
+        providers: [mailer_service_1.MailService],
+        exports: [mailer_service_1.MailService],
     })
-], ConfirmCodeModule);
-exports.ConfirmCodeModule = ConfirmCodeModule;
-//# sourceMappingURL=confirm_code.module.js.map
+], MailerModule);
+exports.MailerModule = MailerModule;
+//# sourceMappingURL=mailer.module.js.map

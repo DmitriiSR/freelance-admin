@@ -2,6 +2,7 @@
   <Transition name="fade">
     <div class="position-absolute position-center-center login-form" v-if="show">
       <h1 class="main-title">Вход в личный кабинет</h1>
+      <span style="color: red">{{loginError}}</span>
       <form autocomplete="on">
         <TextInput :errors="errorFields" :name="'email'" :value="form.email" :label="'Email'" :type="'email'" class="login-email" @inputText="(v) => form.email = v"/>
         <TextInput :errors="errorFields" :name="'password'" :value="form.password" :label="'Пароль'" :type="'password'" class="login-password" @inputText="(v) => form.password = v"/>
@@ -32,7 +33,7 @@ import {ROUTE_MAIN_PATH, ROUTE_PASSWORD_RECOVERY_PATH} from "@/router/vars";
 import {useFadeAppear} from "@/hooks";
 import {Ref, ref} from "vue";
 import { errorField, loginForm } from "@/components/types";
-import axios, {AxiosResponse} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import {LOGIN_URI} from "@/api/post";
 import {useRouter} from "vue-router";
 
@@ -43,7 +44,8 @@ const form: Ref<loginForm> = ref({
   password: ''
 })
 const loading = ref(false);
-const errorFields: Ref<errorField[]> = ref([])
+const errorFields: Ref<errorField[]> = ref([]);
+const loginError = ref('');
 
 const show = useFadeAppear();
 const validateLoginForm = (): boolean => {
@@ -69,38 +71,20 @@ const validateLoginForm = (): boolean => {
   return !errorFields.value.length;
 }
 
-const delay = (ms: number) => {
-  return new Promise<void>((resolve) => setTimeout(resolve, ms));
-}
-
-const sendRequest = async (): Promise<AxiosResponse<{token: string}>> => {
-  return await axios.post(LOGIN_URI, {...form.value});
-}
-
-let timeoutId: number | null;
-
-const waitForAllPromises = async () => {
-  const fetchPromise = sendRequest();
-  const delayPromise = delay(400);
-
-  await Promise.all([fetchPromise, delayPromise]);
-
-  return await fetchPromise;
-}
-
 async function login() {
   if (!validateLoginForm()) return
 
   loading.value = true;
-  if (timeoutId) clearTimeout(timeoutId);
 
-  waitForAllPromises().then(res => {
-    loading.value = false;
-    localStorage.setItem('jwtToken', res.data.token);
-    router.push({
-      path: ROUTE_MAIN_PATH
+  axios.post(LOGIN_URI, {...form.value})
+    .then(res => {
+      localStorage.setItem('jwtToken', res.data.token);
+      router.push({
+        path: ROUTE_MAIN_PATH
+      })
     })
-  })
+    .catch(e => console.log(e))
+    .finally(() => loading.value = false)
 }
 
 </script>

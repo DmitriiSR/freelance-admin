@@ -12,13 +12,14 @@ const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
 const users_module_1 = require("../users/users.module");
 const confirm_code_service_1 = require("../confirm_code/confirm_code.service");
+const mailer_service_1 = require("../mailer/mailer.service");
 const jwt_1 = require("@nestjs/jwt");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, confirm_code_service_1.CodeService],
+        providers: [auth_service_1.AuthService, confirm_code_service_1.CodeService, mailer_service_1.MailService],
         imports: [
             users_module_1.UsersModule,
             jwt_1.JwtModule.register({

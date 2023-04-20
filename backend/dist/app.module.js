@@ -17,6 +17,7 @@ const confirm_code_module_1 = require("./confirm_code/confirm_code.module");
 const serve_static_1 = require("@nestjs/serve-static");
 const core_1 = require("@nestjs/core");
 const path = require("path");
+const mailer_1 = require("@nestjs-modules/mailer");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -48,6 +49,17 @@ AppModule = __decorate([
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: path.join(__dirname, '../../', 'frontend', 'dist'),
                 exclude: ['/api*'],
+            }),
+            mailer_1.MailerModule.forRoot({
+                transport: {
+                    host: 'smtp-mail.outlook.com',
+                    port: 587,
+                    secure: false,
+                    auth: {
+                        user: 'd.raybukhin0509@outlook.com',
+                        pass: 'dima0509',
+                    },
+                },
             }),
         ]
     })
