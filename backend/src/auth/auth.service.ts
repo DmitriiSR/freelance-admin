@@ -30,16 +30,15 @@ export class AuthService {
         }
 
         this.user = {...userDto}
-        //
-        // this.CodeService.generateCode();
-        //
-        // this.mailService.sendMail(
-        //     this.user.email,
-        //     'Подтверждение почты',
-        //     `Код ${this.CodeService.getCode()}`,
-        // )
-        //     .then(() => console.log('код успешно отправлен'))
-        //     .catch((error) => console.log(error))
+
+        this.CodeService.generateCode();
+        this.mailService.sendMail(
+            this.user.email,
+            'Подтверждение почты',
+            `Код ${this.CodeService.getCode()}`,
+        )
+            .then(() => console.log('код успешно отправлен'))
+            .catch((error) => console.log(error))
 
         return true
     }

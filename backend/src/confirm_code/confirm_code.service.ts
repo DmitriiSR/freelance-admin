@@ -13,8 +13,7 @@ export class CodeService {
     }
 
     generateCode(): void {
-        this.code = 1234
-            // Math.floor(Math.random() * 9000) + 1000;
+        this.code = Math.floor(Math.random() * 9000) + 1000;
     }
 
     validateCode(code: number): boolean {

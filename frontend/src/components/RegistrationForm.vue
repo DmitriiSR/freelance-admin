@@ -52,7 +52,7 @@ const loading = ref(false);
 const validateRegistrationForm = (): boolean => {
   errorFields.value = [];
   const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
-  const PASSWORD_REGEXP = /^(?=.*\d)\w{3,20}$/m;
+  const PASSWORD_REGEXP = /^(?=.*\d)\w{8,20}$/m;
 
   let field: keyof registerForm;
   for (field in form.value) {

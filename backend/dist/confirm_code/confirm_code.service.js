@@ -19,7 +19,7 @@ let CodeService = class CodeService {
         return this.code;
     }
     generateCode() {
-        this.code = 1234;
+        this.code = Math.floor(Math.random() * 9000) + 1000;
     }
     validateCode(code) {
         return code === this.code;
