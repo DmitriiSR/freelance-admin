@@ -1,5 +1,12 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*"],
+      "@/*": [
+        "src/*"
+      ]
+    },
     "target": "esnext",
     "module": "esnext",
     "strict": true,
@@ -11,16 +18,10 @@
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "sourceMap": true,
-    "baseUrl": ".",
     "types": [
       "webpack-env",
       "jest"
     ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
     "lib": [
       "esnext",
       "dom",

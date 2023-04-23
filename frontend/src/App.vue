@@ -2,7 +2,7 @@
   <router-view></router-view>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup>``
 import { useRouter } from 'vue-router'
 import {ROUTE_REGISTRATION_PATH, ROUTE_LOGIN_PATH} from "@/router/vars";
 

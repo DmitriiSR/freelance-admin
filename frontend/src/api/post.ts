@@ -1,5 +1,5 @@
-const host = window.location.host;
-const port = window.location.host === 'localhost' ? ':5000' : ''
+const host = window.location.hostname;
+const port = window.location.hostname === 'localhost' ? ':5000' : ''
 const protocol = window.location.protocol;
 const origin = `${protocol}//${host}${port}`
 
